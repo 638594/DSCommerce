@@ -1,12 +1,11 @@
 package com.devluiz.dscommerce.controllers.handlers;
 
 import com.devluiz.dscommerce.dto.CustomError;
-import com.devluiz.dscommerce.dto.FieldMessage;
+
 import com.devluiz.dscommerce.dto.ValidationError;
 import com.devluiz.dscommerce.services.exceptions.DatabaseException;
 import com.devluiz.dscommerce.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
