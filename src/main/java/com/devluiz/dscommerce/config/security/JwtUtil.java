@@ -30,10 +30,10 @@ public class JwtUtil {
 
     public String generateToken(Authentication authentication) {
         String username = authentication.getName();
-        String authorities = authentication.getAuthorities().stream()
+        var authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .filter(auth -> auth.startsWith("ROLE_"))
-                .collect(Collectors.joining(","));
+                .toList();
 
         Instant now = Instant.now();
         Instant expiryDate = now.plusSeconds(expirationSeconds);
