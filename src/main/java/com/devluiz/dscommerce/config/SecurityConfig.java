@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
@@ -63,6 +64,10 @@ public class SecurityConfig {
         SecretKey originalKey = new SecretKeySpec(keyBytes, "HmacSHA256");
 
         // Retorna o decodificador baseado na chave simétrica
-        return NimbusJwtDecoder.withSecretKey(originalKey).build();
+        return NimbusJwtDecoder.withSecretKey(originalKey)
+                .macAlgorithm(MacAlgorithm.HS256)
+                .build();
     }
+
+
 }

@@ -32,6 +32,7 @@ public class JwtUtil {
         String username = authentication.getName();
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
+                .filter(auth -> auth.startsWith("ROLE_"))
                 .collect(Collectors.joining(","));
 
         Instant now = Instant.now();
@@ -42,7 +43,7 @@ public class JwtUtil {
                 .claim("authorities", authorities)
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(expiryDate)) //Verificar se ta certo a expiration Date
-                .signWith(getSigningKey())
+                .signWith(getSigningKey(), Jwts.SIG.HS256)
                 .compact();
     }
 }
