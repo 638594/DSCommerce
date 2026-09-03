@@ -1,8 +1,12 @@
 package com.devluiz.dscommerce.services;
 
+import com.devluiz.dscommerce.dto.CategoryDTO;
 import com.devluiz.dscommerce.dto.ProductDTO;
+import com.devluiz.dscommerce.dto.ProductDTO2;
 import com.devluiz.dscommerce.dto.ProductMinDTO;
+import com.devluiz.dscommerce.entities.Category;
 import com.devluiz.dscommerce.entities.Product;
+import com.devluiz.dscommerce.repositories.CategoryRepository;
 import com.devluiz.dscommerce.repositories.ProductRepository;
 import com.devluiz.dscommerce.services.exceptions.DatabaseException;
 import com.devluiz.dscommerce.services.exceptions.ResourceNotFoundException;
@@ -26,12 +30,16 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+
     @Transactional(readOnly = true)
-    public ProductDTO findById(Long id){
+    public ProductDTO2 findById(Long id){
         Product product = productRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Recurso nao encontrado")
         );
-        return new ProductDTO(product);
+        return new ProductDTO2(product);
 
     }
 
@@ -42,20 +50,20 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductDTO insert(ProductDTO dto){
+    public ProductDTO2 insert(ProductDTO2 dto){
         Product product = new Product();
         copyDtoToEntity(dto,product);
         product = productRepository.save(product);
-        return new ProductDTO(product);
+        return new ProductDTO2(product);
     }
 
     @Transactional
-    public ProductDTO update(Long id, ProductDTO dto){
+    public ProductDTO2 update(Long id, ProductDTO2 dto){
         try{
             Product product = productRepository.getReferenceById(id);
             copyDtoToEntity(dto,product);
             product = productRepository.save(product);
-            return new ProductDTO(product);
+            return new ProductDTO2(product);
         }
         catch (EntityNotFoundException e){
             throw new ResourceNotFoundException("Recurso nao encontrado");
@@ -75,10 +83,16 @@ public class ProductService {
         }
     }
 
-    private void copyDtoToEntity(ProductDTO dto, Product product){
-        product.setName(dto.getName());
-        product.setDescription(dto.getDescription());
-        product.setPrice(dto.getPrice());
-        product.setImgUrl(dto.getImgUrl());
+    private void copyDtoToEntity(ProductDTO2 dto, Product entity){
+        entity.setName(dto.name());
+        entity.setDescription(dto.description());
+        entity.setPrice(dto.price());
+        entity.setImgUrl(dto.imgUrl());
+
+        entity.getCategories().clear();
+        for (CategoryDTO cat : dto.categories()){
+            Category category = categoryRepository.getReferenceById(cat.id());
+            entity.getCategories().add(category);
+        }
     }
 }

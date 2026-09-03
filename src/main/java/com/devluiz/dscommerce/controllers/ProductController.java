@@ -1,6 +1,7 @@
 package com.devluiz.dscommerce.controllers;
 
 import com.devluiz.dscommerce.dto.ProductDTO;
+import com.devluiz.dscommerce.dto.ProductDTO2;
 import com.devluiz.dscommerce.dto.ProductMinDTO;
 import com.devluiz.dscommerce.services.ProductService;
 import jakarta.validation.Valid;
@@ -24,8 +25,8 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<ProductDTO> findById(@PathVariable("id") Long id){
-        ProductDTO dto = productService.findById(id);
+    public ResponseEntity<ProductDTO2> findById(@PathVariable("id") Long id){
+        ProductDTO2 dto = productService.findById(id);
         return ResponseEntity.ok(dto);
     }
 
@@ -38,16 +39,16 @@ public class ProductController {
 
     //@PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto){
+    public ResponseEntity<ProductDTO2> insert(@Valid @RequestBody ProductDTO2 dto){
         dto = productService.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(dto.getId()).toUri();
+                .buildAndExpand(dto.id()).toUri();
         return ResponseEntity.created(uri).body(dto);
     }
 
     //@PreAuthorize("hasRole('ADMIN')")
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ProductDTO> update(@PathVariable("id") Long id, @Valid @RequestBody ProductDTO dto){
+    public ResponseEntity<ProductDTO2> update(@PathVariable("id") Long id, @Valid @RequestBody ProductDTO2 dto){
         dto = productService.update(id, dto);
         return ResponseEntity.ok(dto);
     }
