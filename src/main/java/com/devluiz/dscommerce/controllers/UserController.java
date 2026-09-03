@@ -1,60 +1,32 @@
 package com.devluiz.dscommerce.controllers;
 
 import com.devluiz.dscommerce.dto.ProductDTO;
+import com.devluiz.dscommerce.dto.UserDTO;
 import com.devluiz.dscommerce.services.ProductService;
+import com.devluiz.dscommerce.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 
 @RestController
-@RequestMapping(value = "/products")
-public class ProductController {
+@RequestMapping(value = "/users")
+public class UserController {
 
     @Autowired
-    private ProductService productService;
+    private UserService userService;
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<ProductDTO> findById(@PathVariable("id") Long id){
-        ProductDTO dto = productService.findById(id);
-        return ResponseEntity.ok(dto);
-    }
-
-    @GetMapping
-    public ResponseEntity<Page<ProductDTO>> findAll(@RequestParam(name = "name", defaultValue = "") String name, Pageable pageable){
-        Page<ProductDTO> dto = productService.findAll(name,pageable);
+    @GetMapping(value = "/me")
+    public ResponseEntity<UserDTO> getMe(){
+        UserDTO dto = userService.getMe();
         return ResponseEntity.ok(dto);
     }
 
 
-    //@PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
-    public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto){
-        dto = productService.insert(dto);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(dto.getId()).toUri();
-        return ResponseEntity.created(uri).body(dto);
-    }
-
-    //@PreAuthorize("hasRole('ADMIN')")
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<ProductDTO> update(@PathVariable("id") Long id, @Valid @RequestBody ProductDTO dto){
-        dto = productService.update(id, dto);
-        return ResponseEntity.ok(dto);
-    }
-
-    //@PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") Long id){
-        productService.delete(id);
-        return ResponseEntity.noContent().build();
-    }
 }
