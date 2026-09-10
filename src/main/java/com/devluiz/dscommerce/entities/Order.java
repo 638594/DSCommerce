@@ -79,4 +79,9 @@ public class Order {
     public List<Product> getProducts(){
         return items.stream().map(x -> x.getProduct()).toList();
     }
+
+    public Payment getPayment() {
+        return payment;
+    }
+    public void setPayment(Payment payment) {}
 }

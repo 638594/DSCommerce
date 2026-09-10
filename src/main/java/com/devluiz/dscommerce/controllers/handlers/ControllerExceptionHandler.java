@@ -8,6 +8,7 @@ import com.devluiz.dscommerce.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -40,6 +41,19 @@ public class ControllerExceptionHandler {
         for(FieldError f : e.getBindingResult().getFieldErrors()){
             err.addError(f.getField(), f.getDefaultMessage());
         }
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<CustomError> acessDenied(AccessDeniedException e, HttpServletRequest request){
+        HttpStatus status = HttpStatus.FORBIDDEN;
+
+        CustomError err = new CustomError(
+                Instant.now(),
+                status.value(),
+                "Acesso negado. Você não tem permissão para acessar este recurso.",
+                request.getRequestURI()
+        );
         return ResponseEntity.status(status).body(err);
     }
 }

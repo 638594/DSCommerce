@@ -1,5 +1,7 @@
 package com.devluiz.dscommerce.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.security.autoconfigure.web.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +24,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -40,6 +43,10 @@ public class SecurityConfig {
     @Value("${cors.origins}")
     private String corsOrigins;
 
+    @Autowired
+    @Qualifier("handlerExceptionResolver")
+    private HandlerExceptionResolver exceptionResolver;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -56,9 +63,15 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/products/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/products/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/products/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/orders/**").hasRole("ADMIN")
 
 
                         .anyRequest().authenticated()
+                );
+
+                http.exceptionHandling(exceptions -> exceptions
+                        .accessDeniedHandler((request, response, accessDeniedException) ->
+                                exceptionResolver.resolveException(request, response, null, accessDeniedException))
                 );
 
                 http.headers(headers -> headers.frameOptions(frame -> frame.disable()));
