@@ -4,6 +4,7 @@ import com.devluiz.dscommerce.entities.Category;
 import com.devluiz.dscommerce.entities.Product;
 import jakarta.validation.constraints.NotEmpty;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -12,7 +13,7 @@ public record ProductDTO2(
         Long id,
         String name,
         String description,
-        Double price,
+        BigDecimal price,
         String imgUrl,
         @NotEmpty(message = "Deve ter pelo menos uma categoria.")
         Set<CategoryDTO> categories

@@ -8,6 +8,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
+import java.math.BigDecimal;
+
 @JsonPropertyOrder({"id", "name","description","price","imgUrl"})
 public class ProductDTO {
 
@@ -19,7 +21,7 @@ public class ProductDTO {
     @Size(min = 10, message = "Descricao precisa ter no minimo 10 caracteres")
     private String description;
     @Positive(message = "Valor do preço deve ser positivo")
-    private Double price;
+    private BigDecimal price;
     private String imgUrl;
 
     public ProductDTO() {
@@ -33,7 +35,7 @@ public class ProductDTO {
         this.imgUrl = entity.getImgUrl();
     }
 
-    public ProductDTO(Long id, String name, String description, Double price, String imgUrl) {
+    public ProductDTO(Long id, String name, String description, BigDecimal price, String imgUrl) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -53,7 +55,7 @@ public class ProductDTO {
         return description;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 

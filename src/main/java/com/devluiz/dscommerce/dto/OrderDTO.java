@@ -3,6 +3,8 @@ package com.devluiz.dscommerce.dto;
 import com.devluiz.dscommerce.entities.Order;
 import com.devluiz.dscommerce.entities.OrderItem;
 import com.devluiz.dscommerce.entities.OrderStatus;
+import jakarta.validation.constraints.NotEmpty;
+import org.aspectj.bridge.IMessage;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -16,6 +18,7 @@ public record OrderDTO(
         OrderStatus status,
         UserMinDTO client,
         PaymentDTO payment,
+        @NotEmpty(message = "A lista deve ter pelo menos um item.")
         List<OrderItemDTO> items
 ) {
 

@@ -2,10 +2,12 @@ package com.devluiz.dscommerce.dto;
 
 import com.devluiz.dscommerce.entities.Product;
 
+import java.math.BigDecimal;
+
 public record ProductMinDTO(
         Long id,
         String name,
-        Double price,
+        BigDecimal price,
         String imgUrl
 ) {
 
