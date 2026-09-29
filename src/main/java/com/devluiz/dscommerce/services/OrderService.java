@@ -2,6 +2,7 @@ package com.devluiz.dscommerce.services;
 
 import com.devluiz.dscommerce.dto.OrderDTO;
 import com.devluiz.dscommerce.dto.OrderItemDTO;
+import com.devluiz.dscommerce.dto.OrderItemDTO2;
 import com.devluiz.dscommerce.dto.ProductDTO2;
 import com.devluiz.dscommerce.entities.*;
 import com.devluiz.dscommerce.repositories.OrderItemRepository;
@@ -45,7 +46,7 @@ public class OrderService {
         order.setStatus(OrderStatus.WAITING_PAYMENT);
         User user = userService.authenticated();
         order.setClient(user);
-        for (OrderItemDTO itemDto : dto.items()){
+        for (OrderItemDTO2 itemDto : dto.items()){
             Product product = productRepository.getReferenceById(itemDto.productId());
             OrderItem item = new OrderItem(order,product, itemDto.quantity(), product.getPrice());
             order.getItems().add(item);
