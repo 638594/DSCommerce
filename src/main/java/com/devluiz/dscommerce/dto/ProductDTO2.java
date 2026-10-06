@@ -30,7 +30,6 @@ public record ProductDTO2(
         @Schema(description = "URL da imagem principal do produto", example = "https://exemplo.com/imagens/monitor-lg.jpg")
         String imgUrl,
         @NotEmpty(message = "Deve ter pelo menos uma categoria.")
-        @Schema(description = "Lista de categorias às quais o produto pertence")
         Set<CategoryDTO> categories
 ) {
 

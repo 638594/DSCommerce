@@ -66,6 +66,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/products/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/orders/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/orders/**").authenticated()
+                        .requestMatchers(HttpMethod.GET,"/users/me").authenticated()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
 
 
